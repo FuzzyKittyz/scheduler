@@ -10,6 +10,7 @@ import axios from 'axios';
 
 
 export default function Application(props) {
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -18,6 +19,7 @@ export default function Application(props) {
   });
 
   const setDay = day => setState({ ...state, day });
+  
   
 
   useEffect(() => {
@@ -34,6 +36,40 @@ export default function Application(props) {
     });
 }, [])
 
+function bookInterview(id, interview) {
+  const appointment = {
+    ...state.appointments[id],
+    interview: { ...interview }
+  };
+  const appointments = {
+    ...state.appointments,
+    [id]: appointment
+  };
+  setState({
+    ...state,
+    appointments
+  });
+};
+
+function deleteInterview(id) {
+  const appointment = {
+    ...state.appointments[id],
+    interview: { ...state.appointments[id].interview}
+  };
+  appointment.interview.interviewer = null 
+  appointment.interview.student = null 
+
+  const appointments = {
+    ...state.appointments,
+    [id]: appointment
+  };
+
+  setState({
+    ...state,
+    appointments
+  })
+}
+
 const dailyAppointments = getAppointmentsForDay(state, state.day)
 
 const schedule = dailyAppointments.map((appointment) => {
@@ -46,6 +82,8 @@ const schedule = dailyAppointments.map((appointment) => {
       time={appointment.time}
       interview={interview}
       interviewers={getInterviewersForDay(state, state.day)}
+      bookInterview={bookInterview}
+      deleteInterview={deleteInterview}
     />
   );
 });

@@ -11,20 +11,17 @@ let getAppointmentsForDay = function(state, day) {
   return appointmentsArr
 }
 
-let getInterview = function(state, interview){
-  if(interview === null) {
+
+let getInterview = function(state, interview) {
+  if (!interview) {
     return null;
   }
-  
-  let interviewersObj = {
+  const interviewObj = {
     student: interview.student,
-    interviewer: {
-      id: state.interviewers[interview.interviewer].id,
-      name: state.interviewers[interview.interviewer].name,
-      avatar: state.interviewers[interview.interviewer].avatar
-    }
   }
-  return interviewersObj;
+  interviewObj.interviewer = state.interviewers[interview.interviewer]
+
+  return interviewObj;
 }
 
 function getInterviewersForDay(state, day) {
