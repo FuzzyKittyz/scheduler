@@ -36,20 +36,23 @@ export default function Application(props) {
     });
 }, [])
 
+
 function bookInterview(id, interview) {
+
   const appointment = {
     ...state.appointments[id],
     interview: { ...interview }
   };
+
   const appointments = {
     ...state.appointments,
     [id]: appointment
   };
-  setState({
-    ...state,
-    appointments
-  });
-};
+
+  return axios.put(`/api/appointments/${id}`, { interview })
+    .then(() => { setState({ ...state, appointments }) });
+}
+
 
 function deleteInterview(id) {
   const appointment = {
@@ -64,10 +67,9 @@ function deleteInterview(id) {
     [id]: appointment
   };
 
-  setState({
-    ...state,
-    appointments
-  })
+  return axios.delete(`api/appointments/${id}`).then((response) => {
+    setState((prev) => ({ ...prev, appointments }));
+  });
 }
 
 const dailyAppointments = getAppointmentsForDay(state, state.day)
