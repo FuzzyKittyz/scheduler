@@ -38,8 +38,10 @@ function bookInterview(id, interview) {
     [id]: appointment
   };
 
-  return axios.put(`/api/appointments/${id}`, { interview })
-    .then(() => { setState({ ...state, appointments }) });
+  return axios
+    .put(`/api/appointments/${id}`, { interview })
+    .then(() => { setState({ ...state, appointments, days: updateSpots(state.day, false) })
+   });
 }
 
 function deleteInterview(id) {
@@ -55,9 +57,32 @@ function deleteInterview(id) {
     [id]: appointment
   };
 
-  return axios.delete(`api/appointments/${id}`).then((response) => {
-    setState((prev) => ({ ...prev, appointments }));
+  return axios
+    .delete(`api/appointments/${id}`)
+    .then(() => { setState((prev) => ({ ...prev, appointments, days: updateSpots(state.day, true) }));
   });
+}
+
+const updateSpots = (day, update) => {
+  const days = state.days;
+
+  let daysIndex = -1;
+
+  const dayUpdate = days.find((item, index) => {
+    if (item.name === day) {
+      daysIndex = index;
+      return item;
+    }
+  })
+
+  if (update) {
+    dayUpdate.spots++
+  } else {
+    dayUpdate.spots--
+  }
+
+  days.splice(daysIndex, 1, dayUpdate);
+  return days;
 }
 
 return {state, setDay, bookInterview, deleteInterview}

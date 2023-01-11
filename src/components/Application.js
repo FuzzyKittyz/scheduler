@@ -61,6 +61,7 @@ const schedule = dailyAppointments.map((appointment) => {
       </section>
       <section className="schedule">
         {schedule}
+        <Appointment time="5pm" />
       </section>
     </main>
   );

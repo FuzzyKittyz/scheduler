@@ -18,7 +18,7 @@ export default function Appointment(props) {
   const EDIT = "EDIT";
   const DELETING = "DELETING"
   const ERROR_SAVE = "ERROR_SAVE"
-  const ERROR_DELETE = "ERROR_SAVE"
+  const ERROR_DELETE = "ERROR_DELETE"
 
 
   const { mode, transition, back } = useVisualMode(
@@ -35,20 +35,20 @@ export default function Appointment(props) {
     props
     .bookInterview(props.id, interview)
     .then(() => transition(SHOW))
-    .catch((error) => transition(ERROR_SAVE, true))
+    .catch(error => transition(ERROR_SAVE, true))
       }
 
   function deleteAppointment() {
-    transition(DELETING, true);
+    transition(DELETING);
     props
      .deleteInterview(props.id)
      .then(() => transition(EMPTY))
-     .catch((error) => transition(ERROR_DELETE, true));
+     .catch(error => transition(ERROR_DELETE, true));
   }
 
   
   return(
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
@@ -64,8 +64,8 @@ export default function Appointment(props) {
       {mode === SAVING && <Status message = 'Saving' />}
       {mode === EDIT && <Form interviewers={props.interviewers} onCancel={() => back()} onSave={save} />  }
       {mode === DELETING && <Status message='Deleting'/>}
-      {mode === ERROR_SAVE && <Error message='Could not Save Appointment' onClose={() => back()}/>}
-      {mode === ERROR_DELETE && <Error message='Could not Delete Appointment' onClose={() => back()}/>}
+      {mode === ERROR_SAVE && <Error message='Could not Save Appointment' onClose={() => back()} /> }
+      {mode === ERROR_DELETE && <Error message='Could not Delete Appointment' onClose={() => back()} /> }
 
   
     </article>
