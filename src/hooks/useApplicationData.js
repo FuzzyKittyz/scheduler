@@ -38,9 +38,9 @@ function bookInterview(id, interview) {
     [id]: appointment
   };
 
-  return axios
+   return axios
     .put(`/api/appointments/${id}`, { interview })
-    .then(() => { setState({ ...state, appointments, days: updateSpots(state.day, false) })
+    .then(() => {setState({ ...state, appointments, days: updateSpots(state.day, false) })
    });
 }
 

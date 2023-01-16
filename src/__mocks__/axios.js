@@ -1,3 +1,5 @@
+
+
 const fixtures = {
   days: [
     {
@@ -51,8 +53,7 @@ const fixtures = {
       avatar: "https://i.imgur.com/FK8V841.jpg"
     }
   }
-}
-
+};
 
 export default {
   get: jest.fn(url => {
@@ -60,7 +61,7 @@ export default {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
-        data: fixtures.days
+        data: JSON.parse(JSON.stringify(fixtures.days))
       });
     }
 
@@ -68,7 +69,7 @@ export default {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
-        data: fixtures.appointments
+        data: JSON.parse(JSON.stringify(fixtures.appointments))
       });
     }
 
@@ -76,8 +77,20 @@ export default {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
-        data: fixtures.interviewers
+        data: JSON.parse(JSON.stringify(fixtures.interviewers))
       });
     }
+  }),
+  put: jest.fn(url => {
+    return Promise.resolve({
+      status: 204,
+      statusText: "No Content"
+    })
+  }),
+  delete: jest.fn(url => {
+    return Promise.resolve({
+      status: 204,
+      statusText: "No Content"
+    })
   })
 }
