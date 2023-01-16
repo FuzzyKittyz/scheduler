@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export default function useVisualMode(initial) {
+  //changes the mode of what you see ex: going from empty slot to "show" slot to show a booked appointment
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
