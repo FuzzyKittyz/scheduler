@@ -26,8 +26,32 @@ export default function useApplicationData(){
 
 const setDay = day => setState({ ...state, day });
 
-function bookInterview(id, interview) {
 
+const updateSpots = function (id, appointments) {
+  // find the day that we want to book or cancel our appointment and see if it includes the
+  // appointment id 
+  const foundDay = state.days.find((day) => day.appointments.includes(id));
+  const foundIndex = state.days.findIndex((day) => day.appointments.includes(id));
+
+  let spots = 0;
+  if (!foundDay) {
+    return state.days;
+  }
+
+  for (const id of foundDay.appointments) {
+    if (appointments[id].interview === null) {
+      spots++
+    }
+  }
+  const days = [
+    ...state.days
+  ]
+  days[foundIndex] = { ...days[foundIndex], spots }
+  return days
+}
+
+function bookInterview(id, interview) {
+  //function used to take a given object consiting of the interviewer selected and the name give and updating the schdule(and state) to have that appointment booked 
   const appointment = {
     ...state.appointments[id],
     interview: { ...interview }
@@ -40,49 +64,30 @@ function bookInterview(id, interview) {
 
    return axios
     .put(`/api/appointments/${id}`, { interview })
-    .then(() => {setState({ ...state, appointments, days: updateSpots(state.day, false) })
+    .then(() => {setState({ ...state, appointments, days: updateSpots(id, appointments) })
    });
 }
 
 function deleteInterview(id) {
+  //function that takes the ID of a given appointment and deletes the appointment while updating the state
   const appointment = {
     ...state.appointments[id],
-    interview: { ...state.appointments[id].interview}
+    interview: null
   };
-  appointment.interview.interviewer = null 
-  appointment.interview.student = null 
-
   const appointments = {
     ...state.appointments,
     [id]: appointment
-  };
-
-  return axios
-    .delete(`api/appointments/${id}`)
-    .then(() => { setState((prev) => ({ ...prev, appointments, days: updateSpots(state.day, true) }));
-  });
-}
-
-const updateSpots = (day, update) => {
-  const days = state.days;
-
-  let daysIndex = -1;
-
-  const dayUpdate = days.find((item, index) => {
-    if (item.name === day) {
-      daysIndex = index;
-      return item;
-    }
-  })
-
-  if (update) {
-    dayUpdate.spots++
-  } else {
-    dayUpdate.spots--
   }
-
-  days.splice(daysIndex, 1, dayUpdate);
-  return days;
+  const days = updateSpots(id, appointments)
+  const interviewDataFromAPI = `/api/appointments/${id}`;
+  return axios.delete(interviewDataFromAPI)
+    .then(() => {
+      setState((prev) => {
+        return {
+          ...prev, appointments, days
+        }
+      })
+    })
 }
 
 return {state, setDay, bookInterview, deleteInterview}
