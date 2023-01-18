@@ -12,13 +12,13 @@ Delete an interview if no longer needed.
 
 ## Screenshots
 
-!["Selected Day"]()
+!["Selected Day"](https://github.com/FuzzyKittyz/scheduler/blob/master/docs/appointment-list.png)
 
-!["Booking an Appointment"]()
+!["Booked an Appointment"](https://github.com/FuzzyKittyz/scheduler/blob/master/docs/appointment-booked.png)
 
-!["Editing an Appointment"]()
+!["Editing an Appointment"](https://github.com/FuzzyKittyz/scheduler/blob/master/docs/appointment-edit.png)
 
-!["Deleting an Appointment"]()
+!["Deleting an Appointment"](https://github.com/FuzzyKittyz/scheduler/blob/master/docs/appointment-delete.png)
 
 ## Setup
 
